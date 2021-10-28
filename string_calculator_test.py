@@ -39,3 +39,6 @@ class TestStringCalculator(unittest.TestCase):
 
     def test_when_pass_multiple_delimiters(self):
         self.assertEqual(self.calculator.add("//[*][%][&]\n2000*1%2&3"), 6)
+
+    def test_when_pass_multiple_delimiters_with_equal_values(self):
+        self.assertEqual(self.calculator.add("//[*][**][&]\n2000**1*2&3"), 6)
