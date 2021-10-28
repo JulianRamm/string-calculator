@@ -1,10 +1,13 @@
 from dataclasses import dataclass
 from exceptions import NegativesNotAllowed
 import re
+import logger
 
 
-@dataclass
 class StringCalculator:
+    
+    def __init__(self, logger: logger.Logger) -> None:
+        self.logger = logger
 
     def add(self, numbers: str):
         numbers_to_sum = []
@@ -27,10 +30,14 @@ class StringCalculator:
         else:
             numbers_to_sum.append(int(numbers))
         self._check_for_negative_numbers(numbers_to_sum)
-        return sum([x for x in numbers_to_sum if x <=1000])
+        res = sum([x for x in numbers_to_sum if x <=1000])
+        self.logger.write(str(res), None)
+        return res
 
     def _check_for_negative_numbers(self, numbers):
         negative_numbers = [x for x in numbers if x < 0]
         if len(negative_numbers) > 0:
-            raise NegativesNotAllowed(f"Negatives numbers not allowed: {','.join(str(a) for a in negative_numbers)}")
+            exception = NegativesNotAllowed(f"Negatives numbers not allowed: {','.join(str(a) for a in negative_numbers)}")
+            self.logger.write("Sum not allowed", exception)
+            raise exception
 

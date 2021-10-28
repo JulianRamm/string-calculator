@@ -1,13 +1,14 @@
 import unittest
 from string_calculator import StringCalculator
 from exceptions import NegativesNotAllowed
-
+from basic_logger import BasicLogger
+from logger_mock import loggerClass
 
 class TestStringCalculator(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures."""
-        self.calculator = StringCalculator()
+        self.calculator = StringCalculator(BasicLogger())
 
     def test_calculate_sum_with_empty_string(self):
         self.assertEqual(self.calculator.add(""), 0)
@@ -45,3 +46,9 @@ class TestStringCalculator(unittest.TestCase):
 
     def test_when_len_is_greater_than_one(self):
         self.assertEqual(self.calculator.add("//[**][%%][..]\n2000**1%%2..3"), 6)
+
+    def test__calculator__logger_instance_is_invoked__logger_should_have_count_of_1(self):
+        logger_mock = loggerClass()
+        calc = StringCalculator(logger_mock)
+        calc.add("//;\n2000;1;2")
+        self.assertEqual(logger_mock.call_count, 1)
