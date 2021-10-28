@@ -13,12 +13,15 @@ class StringCalculator:
         elif "//" in numbers[:2]:
             char_index = numbers.index("\n")
             delimiters = [delimiter[:-1] for delimiter in numbers[3: char_index].split("[")]
-            print(delimiters)
-            a = []
-            number_to_sum_v2 = [int(n) for n in re.split(r"|".join(), numbers[char_index+1:])]
-            lista = re.split(r"|".join(delimiters), numbers[char_index+1:])
-            print(number_to_sum_v2)
-            numbers_to_sum = [int(n) for n in numbers[char_index+1:].split(re.search(r"\/\/\[?([^\]]+)\]?\n.*", numbers).group(1))] 
+            if "" in delimiters:
+                delimiters = list(numbers[2:char_index])
+            numbers_delimiters = numbers[char_index+1:]  
+            for delimiter in delimiters:
+                numbers_delimiters = "_".join(numbers_delimiters.split(delimiter))
+            lista = numbers_delimiters.split("_")
+            while "" in lista:
+                lista.remove("")
+            numbers_to_sum = [int(n) for n in lista]
         elif ',' in numbers:
             numbers_to_sum = [int(n) for n in re.split(r",|\n", numbers)]
         else:
